@@ -2,24 +2,28 @@
 This is the webpage source code for COMP5411 rendering project.  
   
 Platform:  
-ionic  
+HTML5 (using HTML5 Boilerplate)  
   
 API:   
-Angular  
 WebGL + Three.js  
 # Prerequisites
 ## Installation
-nodejs  
-ionic  
+nodejs   
 three  
-@type/three
+
 ## Reference
-https://ionicframework.com/docs/v3/intro/installation/  
+
+JavaScript Crash Course: https://cs.wellesley.edu/~cs307/readings/JavaScript-crash-course.html
+
+3js slide set from RTR: http://www.realtimerendering.com/basics3js/#1
+
+Mash Phong Material: https://threejs.org/docs/?q=meshphongmaterial#api/en/materials/MeshPhongMaterial
+
+
 
   
 # Test and Debug
-Command: ionic serve
+
 
 # Deployment
-Command: ionic build  
-All built files are in folder "www"
+

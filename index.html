@@ -1,4 +1,12 @@
-<!doctype html>
+<!---------------------------------------------------
+
+COMP 5411 Rendering project
+Advertisement Style Transfer from 2D to 3D
+Authors: CHEN, Yingshu, HUANG, Huajian
+
+----------------------------------------------------->
+
+<!DOCTYPE html>
 <html class="no-js" lang="">
 
 <head>
@@ -17,18 +25,25 @@
   <meta name="theme-color" content="#fafafa">
 </head>
 
-<body>
+<body onresize="onWindowResize()">
   <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
 
   <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
   <script src="js/vendor/modernizr-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
+
+
+
+  <script src="https://threejs.org/build/three.js"></script>
+<!--  <script src="js/three.js"></script>-->
   <script src="js/main.js"></script>
+<!--  <script src="js/cys.js"></script>-->
+<!--  <script src="js/hhj.js"></script>-->
+  <script src="js/template_0.js"></script>
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
 <!--  <script>-->
@@ -38,11 +53,126 @@
 <!--  <script src="https://www.google-analytics.com/analytics.js" async></script>-->
 
   <!---->
-  <div >
-<!--TODO
-UI
+  <div class="main-scene-container">
+
+<!---------------------------------------------------------------------------------------------->
+<!--Main display area with as much as large space (assume with full screen of ratio 16:9)
+    Menu is a floating icon, which can be expanded into a list.
+    Menu list has sections of
+      1) template: 2D template sketches
+      2) shading model: Phong or Flatten
+      3) elements: all elements in the scenes, including
+        3D static/dynamic objects, 2D background image, light sources
+      4)a) attributes (of selected element),
+          for 3D object:
+            i)  3D sketch(X)
+            ii) position
+            iii)rotation
+            iv) scale
+            v)  material > metal, reflection, emission?, refraction(X), texture, normal map(X), height map(X)... TODO
+            vi) texture (TODO??? same as 2D background)
+          for 2D background plane/ dome?/ sphere:
+            i)  2D sketch (thumb image)
+            ii) position (fix? or not?)
+            iii)mode: (TODO refer to texture slide) sketch, repeated, ????
+          for light sources:
+            i)  type: directional light, point light, spotlight, area light
+            ii) position
+            iii)rotation
+            iv) color
+            v) intensity
+            vi)...TODO refers to three.js light parameters
 -->
+<!---------------------------------------------------------------------------------------------->
+  </div>
+
+  <div class="menu-contrainer">
+    <a class="hamburger-shell">
+      <div class="hamb top"></div>
+      <div class="hamb middle"></div>
+      <div class="menu-name">MENU</div>
+
+      <ul id="menu">
+        <a href="#"> <li>Templates</li></a>
+        <!--TODO Hardcode now-->
+        <!--TODO using js to insert template checkboxes / others-->
+        <form class="menu_template menu-sencond-level">
+          <input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked> Default<br>
+          <input class="menu-template-checkbox" type="radio" name="template" value="cys" id="template_1" onclick="selectTemplate(1)"> CYS<br>
+          <input class="menu-template-checkbox" type="radio" name="template" value="hhj" id="template_2" onclick="selectTemplate(2)"> HHJ<br>
+        </form>
+        <a href="#"> <li>Shading Model</li></a>
+        <a href="#"> <li>Elements</li></a>
+        <a href="#" class="menu-second-level"> <li>Attributes</li></a>
+        <a href="#"> <li>Contact</li></a>
+      </ul>
+    </a>
+
   </div>
 </body>
+
+<!-- Change Template -->
+<script>
+    //change javascript
+    //reference: http://javascriptkit.com/javatutors/loadjavascriptcss2.shtml
+
+    currentTemplateName = "template_0";
+    oldTemplateName = "";
+
+    // function removejscssfile(filename, filetype){
+    //     var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist from
+    //     var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+    //     var allsuspects=document.getElementsByTagName(targetelement)
+    //     for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+    //         if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1)
+    //             allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
+    //     }
+    // }
+    function createjscssfile(filename, filetype){
+        if (filetype=="js"){ //if filename is a external JavaScript file
+            var fileref=document.createElement('script')
+            fileref.setAttribute("type","text/javascript")
+            fileref.setAttribute("src", filename)
+        }
+        else if (filetype=="css"){ //if filename is an external CSS file
+            var fileref=document.createElement("link")
+            fileref.setAttribute("rel", "stylesheet")
+            fileref.setAttribute("type", "text/css")
+            fileref.setAttribute("href", filename)
+        }
+        return fileref
+    }
+
+    function replacejscssfile(oldfilename, newfilename, filetype){
+        var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
+        var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+        var allsuspects=document.getElementsByTagName(targetelement)
+        for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+            if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
+                var newelement=createjscssfile(newfilename, filetype)
+                allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
+            }
+        }
+    }
+
+    // replacejscssfile("oldscript.js", "newscript.js", "js") //Replace all occurences of "oldscript.js" with "newscript.js"
+    // replacejscssfile("oldstyle.css", "newstyle", "css") //Replace all occurences "oldstyle.css" with "newstyle.css"
+
+    function selectTemplate(id) {
+        template = document.getElementById("template_"+ id);
+        if (template.checked == true){
+            oldTemplateName = currentTemplateName;
+            // currentTemplateName = "js/template_" + id;
+            currentTemplateName = template.value;
+            clearScene();
+            replacejscssfile("js/"+oldTemplateName+".js", "js/"+currentTemplateName+".js", "js");
+
+            console.log(currentTemplateName + " loaded");
+        } else {
+
+        }
+    }
+
+</script>
 
 </html>

@@ -265,3 +265,165 @@ textarea {
   }
 }
 
+/* ==========================================================================
+  Customized style
+   ========================================================================== */
+
+body { margin: 0; }
+canvas { width: 100%; height: 100% }
+
+.main-scene-container {
+  width: 100%;
+  height: 100%
+}
+
+.menu-contrainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: auto;
+}
+.bg-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 0;
+  transition: all 350ms ease;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.enlarge {
+  width: 300px;
+  height: 100%;
+  background-color: #efefef;
+}
+.prompt {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  line-height: 114px;
+  font-family: Georgia;
+  color: #666;
+}
+
+.reveal {
+  opacity: .85;
+  display: block;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.hamburger-shell {
+  margin: 0;
+  position: fixed;
+  overflow: hidden;
+  width: 70px;
+  height: 100px;
+  overflow: auto;
+  left: calc(100% - 100px);
+  top: 0px;
+  cursor: pointer;
+}
+
+.top, .middle{
+  position: absolute;
+  width: 62px;
+  height: 10px;
+  background-color: #b3d4fc;
+  transition: all 350ms ease-in-out;
+  top: 20px;
+}
+
+.middle {
+  top: 40px;
+}
+
+
+.menu-name {
+  font-family: Verdana;
+  font-weight: 900;
+  color: black;
+  font-size: 19.5px;
+  text-decoration: none;
+  position: absolute;
+  top: 56px;
+  left: -1px;
+  transition: all 350ms;
+}
+
+#menu {
+  position: fixed;
+  left: calc(100% - 300px);
+  top: 10px;
+  color: #333;
+  display: none;
+  margin: 120px 30px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  text-transform: uppercase;
+  padding: 24px;
+  width: 200px;
+  text-align: right;
+}
+
+#menu a li {
+  text-decoration: none!important;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid black;
+  list-style: none;
+  color: #555;
+  transition: all 150ms ease;
+}
+
+#menu a li:hover {
+  color: #00abff;
+  padding-right: 3px;
+}
+
+#menu a li:hover:after {
+}
+
+#menu a {
+  text-decoration: none;
+}
+.rotate {
+  transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+  top: 30px;
+  background-color: red;
+  height: 2px;
+}
+
+.rotate-back {
+  transform: rotate(-225deg);
+  -webkit-transform: rotate(-225deg);
+  top: 30px;
+  background-color: red;
+  height: 2px;
+}
+
+.top {
+  -webkit-animation-delay: 100ms;
+}
+
+.middle {
+  -webkit-animation-delay: 250ms;
+}
+
+.bottom {
+  -webkit-animation-delay: 400ms;
+}
+
+.bump {
+  top: 64px;
+  color: red;
+}

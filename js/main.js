@@ -30,6 +30,7 @@ $(document).ready(function(){
  * ************/
 
 var scene = new THREE.Scene();
+scene.background = new THREE.Color( 0xf0f0f0 ); // UPDATED
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 var renderer = new THREE.WebGLRenderer();
@@ -37,17 +38,23 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 camera.position.z = 5;
 
+
+// Instantiate a loader
+var gltfLoader = new THREE.GLTFLoader();
+
 /* record all objects in the scene */
 object = [];
 material = [];
 texture = [];
 geometry = [];
 animation = [];
+scenes = []
 num_object = 0;
 num_material = 0;
 num_texture = 0;
 num_geometry = 0;
 num_animation = 0;
+num_scene = 0;
 
 function onWindowResize()
 {
@@ -76,6 +83,9 @@ function clearScene() {
   }
   for (i = 0; i < num_material; i++) {
     material[i].dispose();
+  }
+  for (i = 0; i < num_scene; i++) {
+    scenes[i].dispose();
   }
   for (i =0; i < num_animation; i++) {
     cancelAnimationFrame(animation[i]);

@@ -10,9 +10,8 @@ object[cube_id] = new THREE.Mesh( geometry[cube_geo_id], material[cube_mat_id] )
 scene.add( object[cube_id] );
 
 var animate = function () {
-  // animation[num_animation] =
-  requestAnimationFrame( animate );
-  // num_animation++;
+  animation[num_animation] = requestAnimationFrame( animate );
+  num_animation++;
   object[cube_id].rotation.x += 0.01;
   object[cube_id].rotation.y += 0.01;
 

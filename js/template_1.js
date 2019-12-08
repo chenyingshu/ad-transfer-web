@@ -57,7 +57,7 @@ function template_1() {
       num_object++;
       object[gltf_id] = gltf.scene;
 
-      gltf.scene.scale.set(10,12,10)
+      gltf.scene.scale.set(10,12,10);
 
       scene.add(gltf.scene);
 

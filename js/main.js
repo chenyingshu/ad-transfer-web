@@ -39,6 +39,7 @@ var objectMaterial;
 
 // Instantiate a loader
 var gltfLoader = new THREE.GLTFLoader();
+var gltfLoader2 = new THREE.GLTFLoader();
 
 /* record all objects in the scene */
 var object = [];

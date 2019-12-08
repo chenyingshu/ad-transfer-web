@@ -25,7 +25,7 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   <meta name="theme-color" content="#fafafa">
 </head>
 
-<body onresize="onWindowResize()">
+<body>
   <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
@@ -36,15 +36,23 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
 
+  <script type="module">
+      // import * as THREE from 'https://threejs.org/build/three.module.js';
+      // import { GUI } from 'https://threejs.org/examples/jsm/libs/dat.gui.module.js';
+      // var gui = new GUI();
+      // import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
+  </script>
 
-
-<!--  <script src="https://threejs.org/build/three.js"></script>-->
-  <script src="js/three.min.js"></script>
-  <script src="js/GLTFLoader.js"></script> <!--MUST load this script after three.js-->
-  <script src="js/main.js"></script>
-<!--  <script src="js/cys.js"></script>-->
-<!--  <script src="js/hhj.js"></script>-->
-  <script src="js/template_0.js"></script>
+  <!--  <script src="https://threejs.org/build/three.js"></script>-->
+    <script src="js/three.min.js"></script>
+<!--    <script src="js/dat.gui.module.js"></script>-->
+    <script src="js/GLTFLoader.js"></script> <!--MUST load this script after three.js-->
+    <script src="js/OrbitControls.js"></script> <!--MUST load this script after three.js-->
+    <script src="js/main.js"></script>
+  <!--  <script src="js/cys.js"></script>-->
+  <!--  <script src="js/hhj.js"></script>-->
+    <script src="js/template_0.js"></script>
+    <script type="module" src="js/template_module_0.js"></script>
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
 <!--  <script>-->
@@ -98,8 +106,8 @@ Authors: CHEN, Yingshu, HUANG, Huajian
         <!--TODO Hardcode now-->
         <!--TODO using js to insert template checkboxes / others-->
         <form class="menu_template menu-sencond-level">
-          <input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked> Default<br>
-          <input class="menu-template-checkbox" type="radio" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Load Diamond<br>
+          <input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked>Guide<br>
+          <input class="menu-template-checkbox" type="radio" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Diamond<br>
           <input class="menu-template-checkbox" type="radio" name="template" value="cys" id="template_3" onclick="selectTemplate(3)"> CYS<br>
           <input class="menu-template-checkbox" type="radio" name="template" value="hhj" id="template_2" onclick="selectTemplate(2)"> HHJ<br>
         </form>
@@ -113,6 +121,7 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   </div>
 </body>
 
+<!---->
 <!-- Change Template -->
 <script>
     //change javascript

@@ -51,8 +51,7 @@ Authors: CHEN, Yingshu, HUANG, Huajian
     <script src="js/main.js"></script>
   <!--  <script src="js/cys.js"></script>-->
   <!--  <script src="js/hhj.js"></script>-->
-    <script src="js/template_0.js"></script>
-    <script type="module" src="js/template_module_0.js"></script>
+    <script type="module" src="js/template_0.js"></script>
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
 <!--  <script>-->
@@ -102,20 +101,21 @@ Authors: CHEN, Yingshu, HUANG, Huajian
       <div class="menu-name">MENU</div>
 
       <ul id="menu">
-        <a href="#"> <li>Templates</li></a>
+        <a> <li>Templates</li>
         <!--TODO Hardcode now-->
         <!--TODO using js to insert template checkboxes / others-->
         <form class="menu_template menu-sencond-level">
-          <input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked>Guide<br>
+          <input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked> Guide<br>
           <input class="menu-template-checkbox" type="radio" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Template1<br>
           <input class="menu-template-checkbox" type="radio" name="template" value="template_2" id="template_2" onclick="selectTemplate(2)"> Template2<br>
           <input class="menu-template-checkbox" type="radio" name="template" value="cys" id="template_3" onclick="selectTemplate(3)"> CYS<br>
           <input class="menu-template-checkbox" type="radio" name="template" value="hhj" id="template_4" onclick="selectTemplate(4)"> HHJ<br>
         </form>
-        <a href="#"> <li>Shading Model</li></a>
-        <a href="#"> <li>Elements</li></a>
-        <a href="#" class="menu-second-level"> <li>Attributes</li></a>
-        <a href="#"> <li>Contact</li></a>
+        </a>
+<!--        <a href="#"> <li>Shading Model</li></a>-->
+<!--        <a href="#"> <li>Elements</li></a>-->
+<!--        <a href="#" class="menu-second-level"> <li>Attributes</li></a>-->
+<!--        <a href="#"> <li>Contact</li></a>-->
       </ul>
     </a>
 
@@ -143,21 +143,23 @@ Authors: CHEN, Yingshu, HUANG, Huajian
     function createjscssfile(filename, filetype){
         if (filetype=="js"){ //if filename is a external JavaScript file
             var fileref=document.createElement('script')
-            fileref.setAttribute("type","text/javascript")
+            fileref.setAttribute("type","module")
             fileref.setAttribute("src", filename)
         }
-        else if (filetype=="css"){ //if filename is an external CSS file
-            var fileref=document.createElement("link")
-            fileref.setAttribute("rel", "stylesheet")
-            fileref.setAttribute("type", "text/css")
-            fileref.setAttribute("href", filename)
-        }
+        // else if (filetype=="css"){ //if filename is an external CSS file
+        //     var fileref=document.createElement("link")
+        //     fileref.setAttribute("rel", "stylesheet")
+        //     fileref.setAttribute("type", "text/css")
+        //     fileref.setAttribute("href", filename)
+        // }
         return fileref
     }
 
     function replacejscssfile(oldfilename, newfilename, filetype){
-        var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
-        var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+        // var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
+        // var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+        var targetelement = "script";
+        var targetattr = "src";
         var allsuspects=document.getElementsByTagName(targetelement)
         for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
             if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
@@ -172,7 +174,8 @@ Authors: CHEN, Yingshu, HUANG, Huajian
 
     function selectTemplate(id) {
         template = document.getElementById("template_"+ id);
-        if (template.checked == true){
+        template.checked = true;
+
             oldTemplateName = currentTemplateName;
             // currentTemplateName = "js/template_" + id;
             currentTemplateName = template.value;
@@ -180,9 +183,7 @@ Authors: CHEN, Yingshu, HUANG, Huajian
             replacejscssfile("js/"+oldTemplateName+".js", "js/"+currentTemplateName+".js", "js");
 
             console.log(currentTemplateName + " loaded");
-        } else {
 
-        }
     }
 
 </script>

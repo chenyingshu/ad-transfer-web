@@ -19,7 +19,8 @@ $(document).ready(function(){
     $('.bg-cover').toggleClass('reveal');
   })
 });
-
+lights = [];
+num_light = 0;
 /* Menu -- END */
 
 /* Three.js basic setup*/
@@ -30,37 +31,36 @@ $(document).ready(function(){
  * gui
  * ************/
 
-var controls, camera, scene, renderer;
-var cameraCube, sceneCube;
-var textureEquirec, textureCube, textureSphere;
-var cubeMesh, objectMesh;
-var objectMaterial;
-// var gui;
+// var controls, camera, scene, renderer;
+// var cameraCube, sceneCube;
+// var textureEquirec, textureCube, textureSphere;
+// var cubeMesh, objectMesh;
+// var objectMaterial;
+gui = null;
 
 // Instantiate a loader
-var gltfLoader = new THREE.GLTFLoader();
-var gltfLoader2 = new THREE.GLTFLoader();
+gltfLoader = new THREE.GLTFLoader();
+gltfLoader2 = new THREE.GLTFLoader();
 
 /* record all objects in the scene */
-var object = [];
-var material = [];
-var texture = [];
-var geometry = [];
-var animation = [];
-var scenes = [];
-var lights = [];
-var num_object = 0;
-var num_material = 0;
-var num_texture = 0;
-var num_geometry = 0;
-var num_animation = 0;
-var num_scene = 0;
-var num_light = 0;
+object = [];
+material = [];
+texture = [];
+geometry = [];
+animation = [];
+scenes = [];
+lights = [];
+num_object = 0;
+num_material = 0;
+num_texture = 0;
+num_geometry = 0;
+num_animation = 0;
+num_scene = 0;
+num_light = 0;
 
 
 /*INIT - BEGIN*/
 scene = new THREE.Scene();
-
 scene.background = new THREE.Color( 0xf0f0f0 );
 sceneCube = new THREE.Scene();
 
@@ -68,10 +68,6 @@ sceneCube = new THREE.Scene();
 camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 1, 10000 );
 camera.position.set( 0, 0, 5 );
 cameraCube = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 100000 );
-
-// SCENE
-scene = new THREE.Scene();
-sceneCube = new THREE.Scene();
 
 // Lights
 // lights[num_light] = new THREE.AmbientLight( 0x404040 ); // soft white light
@@ -167,9 +163,6 @@ controls.maxDistance = 1000;
 //controls.update() must be called after any manual changes to the camera's transform
 controls.update();
 
-// GUI
-// gui = new GUI();
-
 window.addEventListener( 'resize', onWindowResize, false );
 
 /*INIT - END*/
@@ -212,9 +205,9 @@ function clearScene() {
   for (i = 0; i < num_object; i++) {
     scene.remove( object[i] );
   }
-  for (i = 0; i < num_geometry; i++) {
-    geometry[i].dispose();
-  }
+  // for (i = 0; i < num_geometry; i++) {
+  //   geometry[i].dispose();
+  // }
   for (i = 0; i < num_texture; i++) {
     texture[i].dispose();
   }
@@ -247,8 +240,6 @@ function clearScene() {
   render();
   console.log("Cleared Scene");
 }
-
-
 /* Three.js -- END */
 
 /* Other functions - START *

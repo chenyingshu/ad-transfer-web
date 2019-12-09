@@ -1,6 +1,21 @@
-template_1();
+import * as THREE from "https://threejs.org/build/three.module.js";
+import { GUI } from 'https://threejs.org/examples/jsm/libs/dat.gui.module.js';
+import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader} from "https://threejs.org/examples/jsm/loaders/GLTFLoader.js";
 
-function template_1() {
+template_2();
+
+var cameraCube, sceneCube;
+var textureCube, textureSphere;
+var cubeMesh, objectMesh;
+var objectMaterial;
+
+if (gui != null) {
+  gui.destroy();
+}
+gui = new GUI();
+
+function template_2() {
   // BACKGROUND
   // Textures
   var urls = [
@@ -35,17 +50,17 @@ function template_1() {
   });
 
   // Skybox
-  var cubeMesh = new THREE.Mesh(new THREE.BoxBufferGeometry(100, 100, 100), cubeMaterial);
-  sceneCube.add(cubeMesh);
-  cubeMesh.material = cubeMaterial;
-  cubeMesh.visible = true;
+  // var cubeMesh = new THREE.Mesh(new THREE.BoxBufferGeometry(100, 100, 100), cubeMaterial);
+  // sceneCube.add(cubeMesh);
+  // cubeMesh.material = cubeMaterial;
+  // cubeMesh.visible = true;
 
-  // scene.background = tp1_textureCube;
+  scene.background = textureCube;
 
-  // LOAD OBJECT
-  objectMaterial = new THREE.MeshLambertMaterial({envMap: textureCube});
-  objectMaterial.envMap = textureCube;
-  objectMaterial.needsUpdate = true;
+  // // LOAD OBJECT
+  // objectMaterial = new THREE.MeshLambertMaterial({envMap: textureCube});
+  // objectMaterial.envMap = textureCube;
+  // objectMaterial.needsUpdate = true;
 
   // Load a glTF resource
   gltfLoader.load(
@@ -53,7 +68,7 @@ function template_1() {
     'obj/johnnys_beer/scene.gltf',
     // called when the resource is loaded
     function (gltf) {
-      gltf_id = num_object;
+      var gltf_id = num_object;
       num_object++;
       object[gltf_id] = gltf.scene;
 
@@ -137,7 +152,7 @@ function template_1() {
   lights[num_light].position.set(1, 3, 0);
   lights[num_light].add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xf2f8ec } ) ) );
   scene.add(lights[num_light]);
-  rectLightHelper = new THREE.PointLightHelper( lights[num_light] );
+  // rectLightHelper = new THREE.PointLightHelper( lights[num_light] );
   lights[num_light].add( rectLightHelper );
   num_light++;
 
@@ -151,7 +166,7 @@ function template_1() {
   lights[num_light].shadow.camera.fov = 30;
   lights[num_light].lookAt(0, 0, 0);
   scene.add(lights[num_light]);
-  rectLightHelper = new THREE.SpotLightHelper( lights[num_light] );
+  // rectLightHelper = new THREE.SpotLightHelper( lights[num_light] );
   lights[num_light].add( rectLightHelper );
   num_light++;
 

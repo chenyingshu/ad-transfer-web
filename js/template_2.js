@@ -123,6 +123,7 @@ export default class template_2 {
     await this.loadGLTF(this.scene);
     await this.loadGLTF2(this.scene);
 
+    var scene = this.scene;
     this.gui = new dat.GUI();
     var gui = this.gui;
     // text
@@ -259,6 +260,71 @@ export default class template_2 {
     var spot_num = num_light++;
     lights[spot_num] = new THREE.SpotLight(0xf2f8ec, 10, 100);
 
+    var dynamicLights = {
+      dynamicLights: true
+    };
+
+
+
+    var dynamicFlag = false;
+    var light1, light2, light3, light4;
+    var frameId;
+    function animate() {
+      frameId = requestAnimationFrame( animate );
+      render();
+      // stats.update();
+    }
+
+    function stop() {
+      cancelAnimationFrame(frameId);
+    }
+    var clock = new THREE.Clock();
+    function render() {
+      var time = Date.now() * 0.0005;
+      var delta = clock.getDelta();
+      // if ( object ) object.rotation.y -= 0.5 * delta;
+      light1.position.x = Math.sin( time * 0.7 ) * 15;
+      light1.position.y = Math.cos( time * 0.5 ) * 20;
+      light1.position.z = Math.cos( time * 0.3 ) * 15;
+      light2.position.x = Math.cos( time * 0.3 ) * 15;
+      light2.position.y = Math.sin( time * 0.5 ) * 20;
+      light2.position.z = Math.sin( time * 0.7 ) * 15;
+      light3.position.x = Math.sin( time * 0.7 ) * 15;
+      light3.position.y = Math.cos( time * 0.3 ) * 20;
+      light3.position.z = Math.sin( time * 0.5 ) * 15;
+      light4.position.x = Math.sin( time * 0.3 ) * 15;
+      light4.position.y = Math.cos( time * 0.7 ) * 20;
+      light4.position.z = Math.sin( time * 0.5 ) * 15;
+      // renderer.render( scene, this.camera );
+    }
+    function setDynamicLights(flag){
+      if (dynamicFlag != flag) {
+        dynamicFlag = flag;
+        if (flag) {
+          light1 = new THREE.PointLight( 0xff0040, 2, 50 );
+          light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
+          light2 = new THREE.PointLight( 0x0040ff, 2, 50 );
+          light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x0040ff } ) ) );
+          light3 = new THREE.PointLight( 0x80ff80, 2, 50 );
+          light3.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x80ff80 } ) ) );
+          light4 = new THREE.PointLight( 0xffaa00, 2, 50 );
+          light4.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffaa00 } ) ) );
+          scene.add(light1);
+          scene.add(light2);
+          scene.add(light3);
+          scene.add(light4);
+          animate();
+        } else {
+          scene.remove(light1);
+          scene.remove(light2);
+          scene.remove(light3);
+          scene.remove(light4);
+          stop();
+        }
+      }
+    }
+    setDynamicLights(true);
+
     function setLightings(){
       var rectLightHelper;
       // lights[am_num].intensity = lightingParams.Ambient.intensity;
@@ -282,6 +348,7 @@ export default class template_2 {
       lights[spot_num].lookAt(lightingParams.SpotLight.lookAtx, lightingParams.SpotLight.lookAty, lightingParams.SpotLight.lookAtz);
       // rectLightHelper = new THREE.SpotLightHelper( lights[spot_num] );
       // lights[spot_num].add( rectLightHelper );
+
     }
     setLightings();
     this.scene.add(lights[num_light]);
@@ -296,7 +363,6 @@ export default class template_2 {
     };
 
     this.scene.fog = new THREE.Fog(0xe1fad3, 1, 2);
-    var scene = this.scene;
     function setFog() {
       scene.fog.color.setHex(fogParams.color.replace('#', '0x'));
       scene.fog.near = fogParams.near;
@@ -306,7 +372,10 @@ export default class template_2 {
     // this.scene.background = new THREE.Color(color);
 
     //gui
-    // var f1 = this.gui.addFolder("Object");
+    var f1 = this.gui.addFolder("Dynamic Lights");
+    f1.add(dynamicLights, "dynamicLights").onChange(function (val) {
+      setDynamicLights(val);
+    });
     var f2 = this.gui.addFolder("Lighting");
     var light_idx = am_num;
     var light_param = lightingParams.Ambient;

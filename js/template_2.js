@@ -53,7 +53,7 @@ export default class template_2 {
 
     // scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color( 0xf0f0f0 );
+    // this.scene.background = new THREE.Color( 0xf0f0f0 );
 
     // camera
     this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 1, 10000 );
@@ -77,7 +77,6 @@ export default class template_2 {
 
       this.scene.background = textureCube;
     }
-
 
     // Load a glTF resource
     await this.loadGLTF(this.scene);
@@ -248,6 +247,23 @@ export default class template_2 {
     this.scene.add(lights[point_num]);
     this.scene.add(lights[spot_num]);
 
+    // add fog
+    var fogParams = {
+      color: "#e1fad3",
+      near: 25,
+      far: 100
+    };
+
+    this.scene.fog = new THREE.Fog(0xe1fad3, 1, 2);
+    var scene = this.scene;
+    function setFog() {
+      scene.fog.color.setHex(fogParams.color.replace('#', '0x'));
+      scene.fog.near = fogParams.near;
+      scene.fog.far = fogParams.far;
+    }
+    setFog();
+    // this.scene.background = new THREE.Color(color);
+
     //gui
     // var f1 = this.gui.addFolder("Object");
     var f2 = this.gui.addFolder("Lighting");
@@ -307,6 +323,12 @@ export default class template_2 {
     f3.add(textData, 'anglex', 0, 180).step(0.1).onChange(generateGeometry);
     f3.add(textData, 'angley', 0, 180).step(0.1).onChange(generateGeometry);
     f3.add(textData, 'anglez', 0, 180).step(0.1).onChange(generateGeometry);
+
+
+    var f4 = this.gui.addFolder("Fog");
+    f4.add(fogParams, 'near', 0, 100).onChange(setFog);
+    f4.add(fogParams, 'far', 0, 100).onChange(setFog);
+    f4.addColor(fogParams, 'color').onChange(setFog);
   }
 
 }

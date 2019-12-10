@@ -72,11 +72,13 @@ function init()
 import template_0 from "./template_0.js";
 import template_1 from "./template_1.js";
 import template_2 from "./template_2.js";
+import template_3 from "./template_3.js";
 
 var template_patterns = {
   "template_0": template_0,
   "template_1": template_1,
   "template_2": template_2,
+  "template_3": template_3,
 };
 
 async function selectTemplate(id) {

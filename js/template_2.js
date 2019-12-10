@@ -47,6 +47,47 @@ export default class template_2 {
     let result = await promise; // wait until the promise resolves (*)
   }
 
+  async loadGLTF2(scene) {
+
+    let promise = new Promise((resolve, reject) => {
+      this.gltfLoader = new THREE.GLTFLoader();
+      this.gltfLoader.load(
+        // resource URL
+        'obj/stone_tile/scene.gltf',
+        // called when the resource is loaded
+        function (gltf) {
+          // gltf.scene.children[0].rotation.set(-1.5707963267948963,45,45);
+          gltf.scene.scale.set(100, 100, 100);
+          gltf.scene.position.set(0, -15, 0);
+          gltf.scene.rotation.set(0,45,0);
+
+          scene.add(gltf.scene);
+
+          gltf.animations; // Array<THREE.AnimationClip>
+          gltf.scene; // THREE.Scene
+          gltf.scenes; // Array<THREE.Scene>
+          gltf.cameras; // Array<THREE.Camera>
+          gltf.asset; // Object
+
+          console.log(gltf.scene.children[0]);
+          console.log(gltf.scene);
+          resolve(true);
+        },
+        // called while loading is progressing
+        function (xhr) {
+          console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        // called when loading has errors
+        function (error) {
+          console.log('An error happened');
+          resolve(false);
+        }
+      );
+    });
+
+    let result = await promise; // wait until the promise resolves (*)
+  }
+
   async init() {
     var lights = [];
     var num_light = 0;
@@ -80,6 +121,7 @@ export default class template_2 {
 
     // Load a glTF resource
     await this.loadGLTF(this.scene);
+    await this.loadGLTF2(this.scene);
 
     this.gui = new dat.GUI();
     var gui = this.gui;
@@ -93,11 +135,11 @@ export default class template_2 {
         curveSegments: 12,
         bevelThickness: 0.1,
         bevelSize: 0.05,
-        font: "helvetiker",
+        font: "droid/droid_serif",
         weight: "regular",
         bevelEnabled: true,
-        color: "#ffffff",
-        emissive: "#072534",
+        color: "#f2ffd0",
+        emissive: "#f2f8ec",
         bevelOffset: 0.0,
         bevelSegments: 3,
         flatShading: true,
@@ -174,15 +216,15 @@ export default class template_2 {
       },
       PointLight:  {
         color : "#f2f8ec",
-        intensity : 10,
-        distance: 100,
+        intensity : 50,
+        distance: 20,
         x : 3,
         y : 3,
         z : 6
       },
       SpotLight:  {
         color : "#f2f8ec",
-        intensity : 10,
+        intensity : 7,
         distance: 100,
         posx : 0,
         posy : 6,
@@ -216,7 +258,6 @@ export default class template_2 {
     lights[point_num].add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xf2f8ec } ) ) );
     var spot_num = num_light++;
     lights[spot_num] = new THREE.SpotLight(0xf2f8ec, 10, 100);
-    console.log(am_num, " ", point_num, " ", spot_num);
 
     function setLightings(){
       var rectLightHelper;
@@ -249,7 +290,7 @@ export default class template_2 {
 
     // add fog
     var fogParams = {
-      color: "#e1fad3",
+      color: "#090f06",
       near: 25,
       far: 100
     };
@@ -299,6 +340,9 @@ export default class template_2 {
     f21.add(light_param, 'cam_near', 1, 1000).step(0.5).onChange( setLightings );
     f21.add(light_param, 'cam_far', 1, 10000).step(0.5).onChange( setLightings );
     f21.add(light_param, 'cam_fov', 1, 360).step(0.5).onChange( setLightings );
+    f21.add(light_param, 'mapSize_width', 1, 3000).step(1).onChange( setLightings );
+    f21.add(light_param, 'mapSize_height', 1, 3000).step(1).onChange( setLightings );
+
 
 
     var f3 = this.gui.addFolder("Text");

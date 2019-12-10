@@ -19,8 +19,8 @@ $(document).ready(function(){
     $('.bg-cover').toggleClass('reveal');
   })
 });
-lights = [];
-num_light = 0;
+// lights = [];
+// num_light = 0;
 /* Menu -- END */
 
 /* Three.js basic setup*/
@@ -30,7 +30,7 @@ num_light = 0;
  * renderer
  * gui
  * ************/
-
+/*
 // var controls, camera, scene, renderer;
 // var cameraCube, sceneCube;
 // var textureEquirec, textureCube, textureSphere;
@@ -42,7 +42,7 @@ gui = null;
 gltfLoader = new THREE.GLTFLoader();
 gltfLoader2 = new THREE.GLTFLoader();
 
-/* record all objects in the scene */
+/* record all objects in the scene *
 object = [];
 material = [];
 texture = [];
@@ -59,7 +59,7 @@ num_scene = 0;
 num_light = 0;
 
 
-/*INIT - BEGIN*/
+/*INIT - BEGIN*
 scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xf0f0f0 );
 sceneCube = new THREE.Scene();
@@ -167,40 +167,98 @@ window.addEventListener( 'resize', onWindowResize, false );
 
 /*INIT - END*/
 
-function onWindowResize() {
+var scene, camera, controls, gui, renderer;
 
+/*INIT - BEGIN*/
+function init()
+{
+// renderer
+  renderer = new THREE.WebGLRenderer();
+  renderer.autoClear = true;
+  // renderer.autoClear = false;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+  renderer.gammaOutput = true;
+
+//controls
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 1;
+  controls.maxDistance = 1000;
+//controls.update() must be called after any manual changes to the camera's transform
+  controls.update();
+}
+/*INIT - END*/
+
+/*CHANGE SCENE - START*/
+
+import template_0 from "./template_0.js";
+import template_1 from "./template_1.js";
+
+var template_patterns = {
+  "template_0": template_0,
+  "template_1": template_1,
+};
+
+async function selectTemplate(id) {
+  var template = document.getElementById("template_"+ id);
+  template.checked = true;
+
+  var currentTemplateName = template.value;
+  var sceneInfo = new template_patterns[currentTemplateName]();
+  // var sceneInfo =
+  await sceneInfo.init();
+  stop();
+  scene = sceneInfo.scene;
+  camera = sceneInfo.camera;
+  gui = sceneInfo.gui;
+  init();
+  animate();
+  console.log(currentTemplateName + " loaded");
+}
+window.selectTemplate = selectTemplate;
+selectTemplate(0);
+
+/*CHANGE SCENE - END*/
+
+/* RESIZE WINDOW - START */
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
-  cameraCube.aspect = window.innerWidth / window.innerHeight;
-  cameraCube.updateProjectionMatrix();
-
   renderer.setSize( window.innerWidth, window.innerHeight );
+}
+/* RESIZE WINDOW - END */
 
+/* RENDER & ANIMATE - START */
+var frameId = null;
+function animate() {
+  frameId = requestAnimationFrame( animate );
+  render();
 }
 
-function animate() {
-
-  requestAnimationFrame( animate );
-
-  render();
-
+//clear the scene
+function stop() {
+  cancelAnimationFrame(frameId);
+  try {
+    var elem = renderer.domElement;
+    elem.parentNode.removeChild(elem);
+    elem = gui.domElement;
+    elem.parentNode.removeChild(elem);
+  } catch (e) {
+    console.log("failed to stop")
+  }
 }
 
 function render() {
-  // required if controls.enableDamping or controls.autoRotate are set to true
   controls.update();
-
-  animation[num_animation] = requestAnimationFrame( render );
-
   camera.lookAt( scene.position );
-  cameraCube.rotation.copy( camera.rotation );
-  renderer.render( sceneCube, cameraCube );
   renderer.render( scene, camera );
-  num_animation++;
 }
 
-/**reference: https://threejs.org/docs/#manual/en/introduction/How-to-dispose-of-objects **/
+/* RENDER & ANIMATE - END */
+
+/**reference: https://threejs.org/docs/#manual/en/introduction/How-to-dispose-of-objects **
 function clearScene() {
   for (i = 0; i < num_object; i++) {
     scene.remove( object[i] );
@@ -240,7 +298,9 @@ function clearScene() {
   render();
   console.log("Cleared Scene");
 }
+
 /* Three.js -- END */
+
 
 /* Other functions - START *
 

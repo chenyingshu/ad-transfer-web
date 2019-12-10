@@ -14,14 +14,11 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   <title></title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
   <!-- Place favicon.ico in the root directory -->
-
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
-
   <meta name="theme-color" content="#fafafa">
 </head>
 
@@ -35,23 +32,16 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
-
-  <script type="module">
-      // import * as THREE from 'https://threejs.org/build/three.module.js';
-      // import { GUI } from 'https://threejs.org/examples/jsm/libs/dat.gui.module.js';
-      // var gui = new GUI();
-      // import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
-  </script>
-
-  <!--  <script src="https://threejs.org/build/three.js"></script>-->
-    <script src="js/three.min.js"></script>
-<!--    <script src="js/dat.gui.module.js"></script>-->
-    <script src="js/GLTFLoader.js"></script> <!--MUST load this script after three.js-->
-    <script src="js/OrbitControls.js"></script> <!--MUST load this script after three.js-->
-    <script src="js/main.js"></script>
+  <script src="js/three.min.js"></script>
+  <script src="js/dat.gui.min.js"></script>
+  <script src="js/GLTFLoader.js"></script> <!--MUST load this script after three.js-->
+  <script src="js/OrbitControls.js"></script> <!--MUST load this script after three.js-->
+  <script type="module" src="js/main.js"></script>
+<!--  <script src="js/template_0.js"></script>-->
   <!--  <script src="js/cys.js"></script>-->
   <!--  <script src="js/hhj.js"></script>-->
-    <script type="module" src="js/template_0.js"></script>
+<!--  <script src="js/template_test.js"></script>-->
+<!--  <script src="js/template_test2.js"></script>-->
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
 <!--  <script>-->
@@ -61,7 +51,7 @@ Authors: CHEN, Yingshu, HUANG, Huajian
 <!--  <script src="https://www.google-analytics.com/analytics.js" async></script>-->
 
   <!---->
-  <div class="main-scene-container">
+  <div class="main-scene-container" id="main-scene-container">
 
 <!---------------------------------------------------------------------------------------------->
 <!--Main display area with as much as large space (assume with full screen of ratio 16:9)
@@ -78,7 +68,7 @@ Authors: CHEN, Yingshu, HUANG, Huajian
             iii)rotation
             iv) scale
             v)  material > metal, reflection, emission?, refraction(X), texture, normal map(X), height map(X)... TODO
-            vi) texture (TODO??? same as 2D background)
+            vi) texture
           for 2D background plane/ dome?/ sphere:
             i)  2D sketch (thumb image)
             ii) position (fix? or not?)
@@ -102,14 +92,12 @@ Authors: CHEN, Yingshu, HUANG, Huajian
 
       <ul id="menu">
         <a> <li>Templates</li>
-        <!--TODO Hardcode now-->
-        <!--TODO using js to insert template checkboxes / others-->
         <form class="menu_template menu-sencond-level">
-          <input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked> Guide<br>
-          <input class="menu-template-checkbox" type="radio" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Template1<br>
-          <input class="menu-template-checkbox" type="radio" name="template" value="template_2" id="template_2" onclick="selectTemplate(2)"> Template2<br>
-          <input class="menu-template-checkbox" type="radio" name="template" value="cys" id="template_3" onclick="selectTemplate(3)"> CYS<br>
-          <input class="menu-template-checkbox" type="radio" name="template" value="hhj" id="template_4" onclick="selectTemplate(4)"> HHJ<br>
+          <a href="#guide"><input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked> Guide<br></a>
+          <a href="#template_1"><input class="menu-template-checkbox" type="radio" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Template1<br></a>
+<!--          <input class="menu-template-checkbox" type="radio" name="template" value="template_2" id="template_2" onclick="selectTemplate(2)"> Template2<br>-->
+<!--          <input class="menu-template-checkbox" type="radio" name="template" value="cys" id="template_3" onclick="selectTemplate(3)"> CYS<br>-->
+<!--          <input class="menu-template-checkbox" type="radio" name="template" value="hhj" id="template_4" onclick="selectTemplate(4)"> HHJ<br>-->
         </form>
         </a>
 <!--        <a href="#"> <li>Shading Model</li></a>-->
@@ -123,69 +111,42 @@ Authors: CHEN, Yingshu, HUANG, Huajian
 </body>
 
 <!---->
-<!-- Change Template -->
+<!-- Change Template --
 <script>
     //change javascript
     //reference: http://javascriptkit.com/javatutors/loadjavascriptcss2.shtml
-
     currentTemplateName = "template_0";
     oldTemplateName = "";
 
-    // function removejscssfile(filename, filetype){
-    //     var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist from
-    //     var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
-    //     var allsuspects=document.getElementsByTagName(targetelement)
-    //     for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
-    //         if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1)
-    //             allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
-    //     }
-    // }
-    function createjscssfile(filename, filetype){
-        if (filetype=="js"){ //if filename is a external JavaScript file
-            var fileref=document.createElement('script')
-            fileref.setAttribute("type","module")
-            fileref.setAttribute("src", filename)
-        }
-        // else if (filetype=="css"){ //if filename is an external CSS file
-        //     var fileref=document.createElement("link")
-        //     fileref.setAttribute("rel", "stylesheet")
-        //     fileref.setAttribute("type", "text/css")
-        //     fileref.setAttribute("href", filename)
-        // }
+    function createjsfile(filename, filetype){
+        var fileref=document.createElement('script')
+        fileref.setAttribute("type","text/javascript")
+        fileref.setAttribute("src", filename)
         return fileref
     }
 
-    function replacejscssfile(oldfilename, newfilename, filetype){
-        // var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
-        // var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+    function replacejsfile(oldfilename, newfilename, filetype){
         var targetelement = "script";
         var targetattr = "src";
         var allsuspects=document.getElementsByTagName(targetelement)
         for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
             if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
-                var newelement=createjscssfile(newfilename, filetype)
+                var newelement=createjsfile(newfilename, filetype)
                 allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
             }
         }
     }
-
-    // replacejscssfile("oldscript.js", "newscript.js", "js") //Replace all occurences of "oldscript.js" with "newscript.js"
-    // replacejscssfile("oldstyle.css", "newstyle", "css") //Replace all occurences "oldstyle.css" with "newstyle.css"
 
     function selectTemplate(id) {
         template = document.getElementById("template_"+ id);
         template.checked = true;
 
             oldTemplateName = currentTemplateName;
-            // currentTemplateName = "js/template_" + id;
             currentTemplateName = template.value;
             clearScene();
-            replacejscssfile("js/"+oldTemplateName+".js", "js/"+currentTemplateName+".js", "js");
-
+            replacejsfile("js/"+oldTemplateName+".js", "js/"+currentTemplateName+".js", "js");
             console.log(currentTemplateName + " loaded");
-
     }
-
-</script>
+</script>-->
 
 </html>

@@ -82,6 +82,7 @@ var template_patterns = {
 };
 
 async function selectTemplate(id) {
+
   var template = document.getElementById("template_"+ id);
   template.checked = true;
 
@@ -142,45 +143,7 @@ function render() {
 
 /* RENDER & ANIMATE - END */
 
-/**reference: https://threejs.org/docs/#manual/en/introduction/How-to-dispose-of-objects **
-function clearScene() {
-  for (i = 0; i < num_object; i++) {
-    scene.remove( object[i] );
-  }
-  // for (i = 0; i < num_geometry; i++) {
-  //   geometry[i].dispose();
-  // }
-  for (i = 0; i < num_texture; i++) {
-    texture[i].dispose();
-  }
-  for (i = 0; i < num_material; i++) {
-    material[i].dispose();
-  }
-  for (i = 0; i < num_scene; i++) {
-    scenes[i].dispose();
-  }
-  for (i =0; i < num_animation; i++) {
-    cancelAnimationFrame(animation[i]);
-  }
-  for (i = 0; i < num_light; i++) {
-    scene.remove(lights[i]);
-  }
-  //ref. https://www.jstips.co/en/javascript/two-ways-to-empty-an-array/
-  object.length = 0;
-  material.length = 0;
-  texture.length = 0;
-  geometry.length = 0;
-  animation.length = 0;
-  lights.length = 0;
-  num_object = 0;
-  num_material = 0;
-  num_texture = 0;
-  num_geometry = 0;
-  num_animation = 0;
-  num_light = 0;
-  renderer.setClearColor( 0x000000, 0 );
-  render();
-  console.log("Cleared Scene");
-}
 
 /*************************** THREEJS PART  - END ***********************************/
+
+

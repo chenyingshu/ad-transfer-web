@@ -1,3 +1,10 @@
+import { FresnelShader } from 'https://threejs.org/examples/jsm/shaders/FresnelShader.js';
+var bubbles = [];
+var bubbleParams =  {
+  enable: true,
+  static: false
+};
+
 export default class template_1 {
 
   constructor (elem) {
@@ -139,12 +146,12 @@ export default class template_1 {
     // background texture
     {
       var urls = [
-        './img/template_1/bg_square.png',
-        './img/template_1/bg_square.png',
-        './img/template_1/bg_square.png',
-        './img/template_1/bg_square.png',
-        './img/template_1/bg_square.png',
-        './img/template_1/bg_square.png',
+        './img/template_1/texture.png',
+        './img/template_1/texture.png',
+        './img/template_1/texture.png',
+        './img/template_1/texture.png',
+        './img/template_1/texture.png',
+        './img/template_1/texture.png',
       ];
 
       var textureCube = new THREE.CubeTextureLoader().load(urls);
@@ -155,6 +162,55 @@ export default class template_1 {
       this.scene.background = textureCube;
     }
 
+    //bubbles - Fresnel Effect
+    var bubble_geometry = new THREE.SphereBufferGeometry( 1, 16, 16 );
+    var shader = FresnelShader;
+    var uniforms = THREE.UniformsUtils.merge( [
+
+      THREE.UniformsLib[ "lights" ],
+      shader.uniforms
+
+    ] );//.clone( shader.uniforms );
+    uniforms[ "tCube" ].value = textureCube;
+    var bubble_material = new THREE.ShaderMaterial( {
+      uniforms: uniforms,
+      vertexShader: shader.vertexShader,
+      fragmentShader: shader.fragmentShader
+    } );
+
+    for ( var i = 0; i < 10; i ++ ) {
+
+      var mesh = new THREE.Mesh( bubble_geometry, bubble_material );
+
+      mesh.position.x = Math.random() * 100 - 50;
+      mesh.position.y = Math.random() * 100 - 50;
+      mesh.position.z = Math.random() * 100 - 50;
+
+      mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 1;
+      this.scene.add( mesh );
+      bubbles.push( mesh );
+
+    }
+
+    var scene = this.scene;
+    var bubble_enabled = true;
+    var bubble_static = false;
+    function enableBubbles(flag) {
+      if (bubble_enabled != flag) {
+        if (flag){
+          for (var i = 0, il = bubbles.length; i < il; i++) {
+            var bubble = bubbles[i];
+            scene.add(bubble);
+          }
+        } else {
+          for (var i = 0, il = bubbles.length; i < il; i++) {
+            var bubble = bubbles[i];
+            scene.remove(bubble);
+          }
+        }
+      }
+      bubble_enabled = flag;
+    }
 
     // Load a glTF resource
     await this.loadGLTF(this.scene);
@@ -300,7 +356,9 @@ export default class template_1 {
     }
 
     //gui
-    // var f1 = this.gui.addFolder("Object");
+    var f1 = this.gui.addFolder("Bubble");
+    f1.add(bubbleParams, "enable").onChange(function(val){enableBubbles(val)});
+    f1.add(bubbleParams, "static").onChange(function(val){bubble_static = val});
     var f2 = this.gui.addFolder("Lighting");
     var light_idx = am_num;
     var light_param = this.lightingParams.Ambient;
@@ -397,6 +455,32 @@ export default class template_1 {
     f3.add(textData, 'anglex', 0, 180).step(0.1).onChange(generateGeometry);
     f3.add(textData, 'angley', 0, 180).step(0.1).onChange(generateGeometry);
     f3.add(textData, 'anglez', 0, 180).step(0.1).onChange(generateGeometry);
+
+    animate();
+    var frameId;
+    function animate() {
+
+      frameId = requestAnimationFrame( animate );
+      render();
+      // stats.update();
+    }
+
+    function stop() {
+      cancelAnimationFrame(frameId);
+    }
+    var clock = new THREE.Clock();
+    function render() {
+      var time = Date.now() * 0.0005;
+
+      if (!bubble_static) {
+        for (var i = 0, il = bubbles.length; i < il; i++) {
+          var bubble = bubbles[i];
+          bubble.position.x = 5 * Math.cos(time + i);
+          bubble.position.y = 5 * Math.sin(time + i * 1.1);
+        }
+      }
+
+    }
   }
 
 }

@@ -1,3 +1,6 @@
+import { FresnelShader } from 'https://threejs.org/examples/jsm/shaders/FresnelShader.js';
+var bubbles = [];
+
 export default class template_2 {
 
   constructor (elem) {
@@ -100,15 +103,16 @@ export default class template_2 {
     this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 1, 10000 );
     this.camera.position.set(0, 5, 35);
 
+    var scene = this.scene;
     // background texture
     {
       var urls = [
-        './img/template_2/bg_square.png',
-        './img/template_2/bg_square.png',
-        './img/template_2/bg_square.png',
-        './img/template_2/bg_square.png',
-        './img/template_2/bg_square.png',
-        './img/template_2/bg_square.png',
+        './img/template_2/space_texture.jpg',
+        './img/template_2/space_texture.jpg',
+        './img/template_2/space_texture.jpg',
+        './img/template_2/space_texture.jpg',
+        './img/template_2/space_texture.jpg',
+        './img/template_2/space_texture.jpg',
       ];
 
       var textureCube = new THREE.CubeTextureLoader().load(urls);
@@ -119,13 +123,51 @@ export default class template_2 {
       this.scene.background = textureCube;
     }
 
+    //bubbles - Fresnel Effect
+    var bubble_geometry = new THREE.SphereBufferGeometry( 0.5, 16, 16 );
+    var shader = FresnelShader;
+    var uniforms = THREE.UniformsUtils.merge( [
+
+      THREE.UniformsLib[ "lights" ],
+      shader.uniforms
+
+    ] );//.clone( shader.uniforms );
+    uniforms[ "tCube" ].value = textureCube;
+    var bubble_material = new THREE.ShaderMaterial( {
+      uniforms: uniforms,
+      vertexShader: shader.vertexShader,
+      fragmentShader: shader.fragmentShader
+    } );
+
+    for ( var i = 0; i < 50; i ++ ) {
+
+      var mesh = new THREE.Mesh( bubble_geometry, bubble_material );
+      var x = Math.random() * 15;
+      var y = Math.random() * 15;
+      if (y > (x*x*x))  {
+        y = x - Math.random() * 10;
+      } else if ((x*x*x) - y > 100) {
+        y = x + Math.random() * 7;
+      }
+
+      mesh.position.x = x - 2;
+      mesh.position.y = y - 15;
+      mesh.position.z = Math.random() * 5;
+
+      mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 1;
+      this.scene.add( mesh );
+      bubbles.push( mesh );
+
+    }
+
     // Load a glTF resource
     await this.loadGLTF(this.scene);
     await this.loadGLTF2(this.scene);
 
-    var scene = this.scene;
     this.gui = new dat.GUI();
     var gui = this.gui;
+
+
     // text
     {
       var textData = {
@@ -261,7 +303,7 @@ export default class template_2 {
     lights[spot_num] = new THREE.SpotLight(0xf2f8ec, 10, 100);
 
     var dynamicLights = {
-      dynamicLights: true
+      enable: true
     };
 
 
@@ -373,7 +415,7 @@ export default class template_2 {
 
     //gui
     var f1 = this.gui.addFolder("Dynamic Lights");
-    f1.add(dynamicLights, "dynamicLights").onChange(function (val) {
+    f1.add(dynamicLights, "enable").onChange(function (val) {
       setDynamicLights(val);
     });
     var f2 = this.gui.addFolder("Lighting");

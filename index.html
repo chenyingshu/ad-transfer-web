@@ -32,51 +32,17 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
+
   <script src="js/three.min.js"></script>
   <script src="js/dat.gui.min.js"></script>
   <script src="js/GLTFLoader.js"></script> <!--MUST load this script after three.js-->
   <script src="js/OrbitControls.js"></script> <!--MUST load this script after three.js-->
   <script type="module" src="js/main.js"></script>
 
-  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-<!--  <script>-->
-<!--    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;-->
-<!--    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')-->
-<!--  </script>-->
-<!--  <script src="https://www.google-analytics.com/analytics.js" async></script>-->
+  <script type="text/javascript" src="js/spotlights.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
 
-  <!---->
   <div class="main-scene-container" id="main-scene-container">
-
-<!---------------------------------------------------------------------------------------------->
-<!--Main display area with as much as large space (assume with full screen of ratio 16:9)
-    Menu is a floating icon, which can be expanded into a list.
-    Menu list has sections of
-      1) template: 2D template sketches
-      2) shading model: Phong or Flatten
-      3) elements: all elements in the scenes, including
-        3D static/dynamic objects, 2D background image, light sources
-      4)a) attributes (of selected element),
-          for 3D object:
-            i)  3D sketch(X)
-            ii) position
-            iii)rotation
-            iv) scale
-            v)  material > metal, reflection, emission?, refraction(X), texture, normal map(X), height map(X)... TODO
-            vi) texture
-          for 2D background plane/ dome?/ sphere:
-            i)  2D sketch (thumb image)
-            ii) position (fix? or not?)
-            iii)mode: (TODO refer to texture slide) sketch, repeated, ????
-          for light sources:
-            i)  type: directional light, point light, spotlight, area light
-            ii) position
-            iii)rotation
-            iv) color
-            v) intensity
-            vi)...TODO refers to three.js light parameters
--->
-<!---------------------------------------------------------------------------------------------->
   </div>
 
   <div class="menu-contrainer">
@@ -95,13 +61,62 @@ Authors: CHEN, Yingshu, HUANG, Huajian
         <button class="menu-template-btn" name="template" value="template_2" id="template_2" onclick="selectTemplate(2)"> Template2<br>
           <img src="img/beer.png" class="menu-template-img">
         </button>
-        <button class="menu-template-btn" name="template" value="template_3" id="template_3" onclick="selectTemplate(3)"> Template3<br></button>
+        <button class="menu-template-btn" name="template" value="template_3" id="template_3" onclick="selectTemplate(3)"> Template3<br>
+          <img src="img/beer.png" class="menu-template-img">
+        </button>
 
-        <li class="menu-section">Effects</li>
       </ul>
     </a>
 
   </div>
 </body>
+
+<!-- Change Template -->
+<script>
+    //change javascript
+    //reference: http://javascriptkit.com/javatutors/loadjavascriptcss2.shtml
+
+    currentTemplateName = "template_0";
+    oldTemplateName = "";
+
+    function removejscssfile(filename, filetype){
+        var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist from
+        var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+        var allsuspects=document.getElementsByTagName(targetelement)
+        for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+            if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1)
+                allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
+        }
+    }
+    function createjscssfile(filename, filetype){
+        if (filetype=="js"){ //if filename is a external JavaScript file
+            var fileref=document.createElement('script')
+            fileref.setAttribute("type","text/javascript")
+            fileref.setAttribute("src", filename)
+        }
+        else if (filetype=="css"){ //if filename is an external CSS file
+            var fileref=document.createElement("link")
+            fileref.setAttribute("rel", "stylesheet")
+            fileref.setAttribute("type", "text/css")
+            fileref.setAttribute("href", filename)
+        }
+        return fileref
+    }
+
+    function replacejscssfile(oldfilename, newfilename, filetype){
+        var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
+        var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+        // var targetelement = "script";
+        // var targetattr = "src";
+        var allsuspects=document.getElementsByTagName(targetelement)
+        for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+            if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
+                var newelement=createjscssfile(newfilename, filetype)
+                allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
+            }
+        }
+    }
+
+</script>
 
 </html>

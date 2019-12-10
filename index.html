@@ -37,11 +37,6 @@ Authors: CHEN, Yingshu, HUANG, Huajian
   <script src="js/GLTFLoader.js"></script> <!--MUST load this script after three.js-->
   <script src="js/OrbitControls.js"></script> <!--MUST load this script after three.js-->
   <script type="module" src="js/main.js"></script>
-<!--  <script src="js/template_0.js"></script>-->
-  <!--  <script src="js/cys.js"></script>-->
-  <!--  <script src="js/hhj.js"></script>-->
-<!--  <script src="js/template_test.js"></script>-->
-<!--  <script src="js/template_test2.js"></script>-->
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
 <!--  <script>-->
@@ -86,67 +81,26 @@ Authors: CHEN, Yingshu, HUANG, Huajian
 
   <div class="menu-contrainer">
     <a class="hamburger-shell">
-      <div class="hamb top"></div>
-      <div class="hamb middle"></div>
-      <div class="menu-name">MENU</div>
-
+      <span id = "menu-button">
+        <div class="hamb top"></div>
+        <div class="hamb middle"></div>
+        <div class="menu-name">MENU</div>
+      </span>
       <ul id="menu">
-        <a> <li>Templates</li>
-        <form class="menu_template menu-sencond-level">
-          <a href="#guide"><input class="menu-template-checkbox" type="radio" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)" checked> Guide<br></a>
-          <a href="#template_1"><input class="menu-template-checkbox" type="radio" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Template1<br></a>
-<!--          <input class="menu-template-checkbox" type="radio" name="template" value="template_2" id="template_2" onclick="selectTemplate(2)"> Template2<br>-->
-<!--          <input class="menu-template-checkbox" type="radio" name="template" value="cys" id="template_3" onclick="selectTemplate(3)"> CYS<br>-->
-<!--          <input class="menu-template-checkbox" type="radio" name="template" value="hhj" id="template_4" onclick="selectTemplate(4)"> HHJ<br>-->
-        </form>
-        </a>
-<!--        <a href="#"> <li>Shading Model</li></a>-->
-<!--        <a href="#"> <li>Elements</li></a>-->
-<!--        <a href="#" class="menu-second-level"> <li>Attributes</li></a>-->
-<!--        <a href="#"> <li>Contact</li></a>-->
+        <li class="menu-section">Templates</li>
+        <button class="menu-template-btn active" name="template" value="template_0" id="template_0" onclick="selectTemplate(0)"> Guide<br></button>
+        <button class="menu-template-btn" name="template" value="template_1" id="template_1" onclick="selectTemplate(1)"> Template1<br>
+          <img src="img/diamond.jpg" class="menu-template-img">
+        </button>
+        <button class="menu-template-btn" name="template" value="template_2" id="template_2" onclick="selectTemplate(2)"> Template2<br>
+          <img src="img/beer.png" class="menu-template-img">
+        </button>
+
+        <li class="menu-section">Effects</li>
       </ul>
     </a>
 
   </div>
 </body>
-
-<!---->
-<!-- Change Template --
-<script>
-    //change javascript
-    //reference: http://javascriptkit.com/javatutors/loadjavascriptcss2.shtml
-    currentTemplateName = "template_0";
-    oldTemplateName = "";
-
-    function createjsfile(filename, filetype){
-        var fileref=document.createElement('script')
-        fileref.setAttribute("type","text/javascript")
-        fileref.setAttribute("src", filename)
-        return fileref
-    }
-
-    function replacejsfile(oldfilename, newfilename, filetype){
-        var targetelement = "script";
-        var targetattr = "src";
-        var allsuspects=document.getElementsByTagName(targetelement)
-        for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
-            if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
-                var newelement=createjsfile(newfilename, filetype)
-                allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
-            }
-        }
-    }
-
-    function selectTemplate(id) {
-        template = document.getElementById("template_"+ id);
-        template.checked = true;
-
-            oldTemplateName = currentTemplateName;
-            currentTemplateName = template.value;
-            clearScene();
-            replacejsfile("js/"+oldTemplateName+".js", "js/"+currentTemplateName+".js", "js");
-            console.log(currentTemplateName + " loaded");
-    }
-</script>-->
 
 </html>

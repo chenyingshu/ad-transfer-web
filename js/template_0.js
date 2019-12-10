@@ -21,7 +21,6 @@ export default class template_0 {
 
     //Lights
     {
-
       lights[num_light] = new THREE.PointLight( 0xffffff, 1, 0 );
       lights[num_light].position.set( 0, 200, 0 );
       this.scene.add( lights[ num_light ] );
@@ -45,9 +44,9 @@ export default class template_0 {
         console.warn( 'THREE.GeometryBrowser: Converted Geometry to BufferGeometry.' );
       }
       mesh.children[ 0 ].geometry.dispose();
-      mesh.children[ 1 ].geometry.dispose();
-      mesh.children[ 0 ].geometry = new THREE.WireframeGeometry( geometry );
-      mesh.children[ 1 ].geometry = geometry;
+      // mesh.children[ 1 ].geometry.dispose();
+      // mesh.children[ 0 ].geometry = new THREE.WireframeGeometry( geometry );
+      mesh.children[ 0 ].geometry = geometry;
       // these do not update nicely together if shared
 
     }
@@ -101,7 +100,7 @@ export default class template_0 {
       }
 
       //Hide the wireframe
-      mesh.children[ 0 ].visible = false;
+      // mesh.children[ 0 ].visible = false;
 
       var folder = gui.addFolder( 'TextGeometry' );
       // folder.add( data, 'text' ).onChange( generateGeometry );
@@ -123,9 +122,9 @@ export default class template_0 {
     var group = new THREE.Group();
     var geometry = new THREE.BufferGeometry();
     geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( [], 3 ) );
-    var lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
+    // var lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
     var meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
-    group.add( new THREE.LineSegments( geometry, lineMaterial ) );
+    // group.add( new THREE.LineSegments( geometry, lineMaterial ) );
     group.add( new THREE.Mesh( geometry, meshMaterial ) );
 
     this.gui = new dat.GUI();

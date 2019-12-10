@@ -19,160 +19,37 @@ $(document).ready(function(){
     $('.bg-cover').toggleClass('reveal');
   })
 });
-// lights = [];
-// num_light = 0;
-/* Menu -- END */
 
-/* Three.js basic setup*/
-/**Special variable with name unchanged:
- * scene
- * camera
- * renderer
- * gui
- * ************/
-/*
-// var controls, camera, scene, renderer;
-// var cameraCube, sceneCube;
-// var textureEquirec, textureCube, textureSphere;
-// var cubeMesh, objectMesh;
-// var objectMaterial;
-gui = null;
+try {
+// Get the container element
+  var btnContainer = document.getElementById("menu");
 
-// Instantiate a loader
-gltfLoader = new THREE.GLTFLoader();
-gltfLoader2 = new THREE.GLTFLoader();
+// Get all buttons with class="btn" inside the container
+  var btns = btnContainer.getElementsByClassName("menu-template-btn");
 
-/* record all objects in the scene *
-object = [];
-material = [];
-texture = [];
-geometry = [];
-animation = [];
-scenes = [];
-lights = [];
-num_object = 0;
-num_material = 0;
-num_texture = 0;
-num_geometry = 0;
-num_animation = 0;
-num_scene = 0;
-num_light = 0;
+// Loop through the buttons and add the active class to the current/clicked button
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function () {
+      var current = document.getElementsByClassName("active");
+      // If there's no active class
+      if (current.length > 0) {
+        current[0].className = current[0].className.replace(" active", "");
+      }
+      // Add the active class to the current/clicked button
+      this.className += " active";
+    });
+  }
+} catch (e) {
 
+}
 
-/*INIT - BEGIN*
-scene = new THREE.Scene();
-scene.background = new THREE.Color( 0xf0f0f0 );
-sceneCube = new THREE.Scene();
-
-//CAMERAS
-camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 1, 10000 );
-camera.position.set( 0, 0, 5 );
-cameraCube = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 100000 );
-
-// Lights
-// lights[num_light] = new THREE.AmbientLight( 0x404040 ); // soft white light
-// scene.add( lights[num_light] );
-// num_light++;
-var ambient = new THREE.AmbientLight( 0x404040 );
-scene.add( ambient );
-
-// Textures
-// var urls = [
-//   './img/template_1/bg_square.png',
-//   './img/template_1/bg_square.png',
-//   './img/template_1/bg_square.png',
-//   './img/template_1/bg_square.png',
-//   './img/template_1/bg_square.png',
-//   './img/template_1/bg_square.png',
-// ];
-//
-// textureCube = new THREE.CubeTextureLoader().load( urls );
-// textureCube.format = THREE.RGBFormat;
-// textureCube.mapping = THREE.CubeReflectionMapping;
-// textureCube.encoding = THREE.sRGBEncoding;
-
-// var textureLoader = new THREE.TextureLoader();
-
-// textureEquirec = textureLoader.load( "https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg" );
-// textureEquirec.mapping = THREE.EquirectangularReflectionMapping;
-// textureEquirec.magFilter = THREE.LinearFilter;
-// textureEquirec.minFilter = THREE.LinearMipmapLinearFilter;
-// textureEquirec.encoding = THREE.sRGBEncoding;
-
-// textureSphere = textureLoader.load( "https://threejs.org/examples/textures/metal.jpg" );
-// textureSphere.mapping = THREE.SphericalReflectionMapping;
-// textureSphere.encoding = THREE.sRGBEncoding;
-
-// Materials
-// var equirectShader = THREE.ShaderLib[ "equirect" ];
-//
-// var equirectMaterial = new THREE.ShaderMaterial( {
-//   fragmentShader: equirectShader.fragmentShader,
-//   vertexShader: equirectShader.vertexShader,
-//   uniforms: equirectShader.uniforms,
-//   depthWrite: false,
-//   side: THREE.BackSide
-// } );
-
-// equirectMaterial.uniforms[ "tEquirect" ].value = textureEquirec;
-// // enable code injection for non-built-in material
-// Object.defineProperty( equirectMaterial, 'map', {
-//   get: function () {
-//     return this.uniforms.tEquirect.value;
-//   }
-// } );
-
-// var cubeShader = THREE.ShaderLib[ "cube" ];
-// var cubeMaterial = new THREE.ShaderMaterial( {
-//   fragmentShader: cubeShader.fragmentShader,
-//   vertexShader: cubeShader.vertexShader,
-//   uniforms: cubeShader.uniforms,
-//   depthWrite: false,
-//   side: THREE.BackSide
-// } );
-//
-// cubeMaterial.uniforms[ "tCube" ].value = textureCube;
-// Object.defineProperty( cubeMaterial, 'map', {
-//   get: function () {
-//     return this.uniforms.tCube.value;
-//   }
-// } );
-
-// Skybox
-// cubeMesh = new THREE.Mesh( new THREE.BoxBufferGeometry( 100, 100, 100 ), cubeMaterial );
-// sceneCube.add( cubeMesh );
-
-// Mesh
-// var geometry = new THREE.SphereBufferGeometry( 400.0, 48, 24 );
-// sphereMaterial = new THREE.MeshLambertMaterial( { envMap: textureCube } );
-// sphereMesh = new THREE.Mesh( geometry, sphereMaterial );
-// scene.add( sphereMesh );
-
-// RENDERER
-renderer = new THREE.WebGLRenderer();
-renderer.autoClear = false;
-renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
-renderer.gammaOutput = true; //
-//
-
-controls = new THREE.OrbitControls( camera, renderer.domElement );
-controls.minDistance = 1;
-controls.maxDistance = 1000;
-//controls.update() must be called after any manual changes to the camera's transform
-controls.update();
-
-window.addEventListener( 'resize', onWindowResize, false );
-
-/*INIT - END*/
-
+/*************************** THREEJS PART ***********************************/
 var scene, camera, controls, gui, renderer;
 
 /*INIT - BEGIN*/
 function init()
 {
-// renderer
+  // renderer
   renderer = new THREE.WebGLRenderer();
   renderer.autoClear = true;
   // renderer.autoClear = false;
@@ -181,11 +58,11 @@ function init()
   document.body.appendChild(renderer.domElement);
   renderer.gammaOutput = true;
 
-//controls
+  //controls
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
   controls.maxDistance = 1000;
-//controls.update() must be called after any manual changes to the camera's transform
+  //controls.update() must be called after any manual changes to the camera's transform
   controls.update();
 }
 /*INIT - END*/
@@ -194,10 +71,12 @@ function init()
 
 import template_0 from "./template_0.js";
 import template_1 from "./template_1.js";
+import template_2 from "./template_2.js";
 
 var template_patterns = {
   "template_0": template_0,
   "template_1": template_1,
+  "template_2": template_2,
 };
 
 async function selectTemplate(id) {
@@ -214,6 +93,9 @@ async function selectTemplate(id) {
   gui = sceneInfo.gui;
   init();
   animate();
+
+  var menuElem = document.getElementById("menu-button");
+  menuElem.dispatchEvent(new Event('click'));
   console.log(currentTemplateName + " loaded");
 }
 window.selectTemplate = selectTemplate;
@@ -299,10 +181,4 @@ function clearScene() {
   console.log("Cleared Scene");
 }
 
-/* Three.js -- END */
-
-
-/* Other functions - START *
-
-
- Other functions -- END */
+/*************************** THREEJS PART  - END ***********************************/

@@ -3,7 +3,6 @@ export default class template_1 {
   constructor (elem) {
     this.scene = null;
     this.camera = null;
-    // this.controls = null;
     this.gui = null;
     this.gltfLoader = null;
     this.elem = elem;
@@ -16,7 +15,7 @@ export default class template_1 {
         }
         color.setHex( value );
       };
-    }
+    };
 
     //GUI parameters
     this.lightingParams = {
@@ -76,7 +75,7 @@ export default class template_1 {
         height : 50,
         x : 5,
         y : -5,
-        z : -10
+        z : -10,
       },
     };
   }
@@ -128,6 +127,7 @@ export default class template_1 {
   async init() {
     var lights = [];
     var num_light = 0;
+
     // scene
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( 0xf0f0f0 );
@@ -136,7 +136,113 @@ export default class template_1 {
     this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth/window.innerHeight, 1, 10000 );
     this.camera.position.set(-1, 0.7, 25);
 
-    //Lights
+    // background texture
+    {
+      var urls = [
+        './img/template_1/bg_square.png',
+        './img/template_1/bg_square.png',
+        './img/template_1/bg_square.png',
+        './img/template_1/bg_square.png',
+        './img/template_1/bg_square.png',
+        './img/template_1/bg_square.png',
+      ];
+
+      var textureCube = new THREE.CubeTextureLoader().load(urls);
+      textureCube.format = THREE.RGBFormat;
+      textureCube.mapping = THREE.CubeReflectionMapping;
+      textureCube.encoding = THREE.sRGBEncoding;
+
+      this.scene.background = textureCube;
+    }
+
+
+    // Load a glTF resource
+    await this.loadGLTF(this.scene);
+
+    this.gui = new dat.GUI();
+    var gui = this.gui;
+    // text
+    {
+      var textData = {
+        text: "ADELAIDE\nFRINGE",
+        height: 0.5,
+        size: 2,
+        hover: 1,
+        curveSegments: 12,
+        bevelThickness: 0.1,
+        bevelSize: 0.05,
+        font: "helvetiker",
+        weight: "regular",
+        bevelEnabled: true,
+        color: "#ffffff",
+        emissive: "#072534",
+        bevelOffset: 0.0,
+        bevelSegments: 3,
+        flatShading: true,
+        posx: -20,
+        posy: -5,
+        posz: 0,
+        anglex: 0,
+        angley: 0,
+        anglez: 0
+      };
+
+      var fonts = [
+        "helvetiker",
+        "optimer",
+        "gentilis",
+        "droid/droid_serif"
+      ];
+
+      var weights = [
+        "regular", "bold"
+      ];
+
+      var textMaterial = new THREE.MeshPhongMaterial();
+      var textGeometry = new THREE.BufferGeometry();
+      var textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    }
+    function generateGeometry() {
+
+        var loader = new THREE.FontLoader();
+        loader.load('https://threejs.org/examples/fonts/' + textData.font + '_' + textData.weight + '.typeface.json', function (font) {
+
+          var geometry = new THREE.TextGeometry(textData.text, {
+            font: font,
+            size: textData.size,
+            height: textData.height,
+            curveSegments: textData.curveSegments,
+            bevelEnabled: textData.bevelEnabled,
+            bevelThickness: textData.bevelThickness,
+            bevelSize: textData.bevelSize,
+            bevelOffset: textData.bevelOffset,
+            bevelSegments: textData.bevelSegments
+          });
+
+          geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+
+          textMesh.geometry.dispose();
+          textMesh.geometry = geometry;
+
+          var textMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.DoubleSide,
+            flatShading: textData.flatShading
+          });
+          textMaterial.color.setHex(textData.color.replace('#', '0x'));
+          textMaterial.emissive.setHex(textData.emissive.replace('#', '0x'));
+          textMaterial.needsUpdate = true;
+          // textMesh.material.dispose();
+          textMesh.material = textMaterial;
+          textMesh.position.set(textData.posx, textData.posy, textData.posz);
+          textMesh.rotation.set(textData.anglex, textData.angley, textData.anglez);
+        });
+      }
+
+    generateGeometry();
+    this.scene.add( textMesh );
+
+
+    // lights
     {
       var am_num = num_light;
       lights[num_light] = new THREE.AmbientLight(0xeeeeee, 10); // soft white light
@@ -193,14 +299,8 @@ export default class template_1 {
       num_light++;
     }
 
-
-    // Load a glTF resource
-    await this.loadGLTF(this.scene);
-
-
     //gui
-    this.gui = new dat.GUI();
-    var f1 = this.gui.addFolder("Object");
+    // var f1 = this.gui.addFolder("Object");
     var f2 = this.gui.addFolder("Lighting");
     var light_idx = am_num;
     var light_param = this.lightingParams.Ambient;
@@ -276,6 +376,27 @@ export default class template_1 {
 
 
     var f3 = this.gui.addFolder("Text");
+    // var folder = this.gui.addFolder('TextGeometry');
+    // f3.add( data, 'text' ).onChange( generateGeometry );
+    f3.add(textData, 'size', 1, 30).onChange(generateGeometry);
+    f3.add(textData, 'height', 0.1, 5).step(0.1).onChange(generateGeometry);
+    f3.add(textData, 'curveSegments', 1, 20).step(1).onChange(generateGeometry);
+    f3.add(textData, 'font', fonts).onChange(generateGeometry);
+    f3.add(textData, 'weight', weights).onChange(generateGeometry);
+    f3.add(textData, 'bevelEnabled').onChange(generateGeometry);
+    f3.add(textData, 'bevelThickness', 0.1, 3).onChange(generateGeometry);
+    f3.add(textData, 'bevelSize', 0, 3).onChange(generateGeometry);
+    f3.add(textData, 'bevelOffset', -0.5, 1.5).onChange(generateGeometry);
+    f3.add(textData, 'bevelSegments', 0, 8).step(1).onChange(generateGeometry);
+    f3.add(textData, 'flatShading').onChange(generateGeometry);
+    f3.addColor(textData, 'color').onChange(generateGeometry);
+    f3.addColor(textData, 'emissive').onChange(generateGeometry);
+    f3.add(textData, 'posx', -100, 100).step(0.1).onChange(generateGeometry);
+    f3.add(textData, 'posy', -100, 100).step(0.1).onChange(generateGeometry);
+    f3.add(textData, 'posz', -100, 100).step(0.1).onChange(generateGeometry);
+    f3.add(textData, 'anglex', 0, 180).step(0.1).onChange(generateGeometry);
+    f3.add(textData, 'angley', 0, 180).step(0.1).onChange(generateGeometry);
+    f3.add(textData, 'anglez', 0, 180).step(0.1).onChange(generateGeometry);
   }
 
 }

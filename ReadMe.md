@@ -1,16 +1,15 @@
-# Advertisement App
+# 3D Advertisement Poster App
 This is the webpage source code for COMP5411 rendering project.  
   
 Platform:  
 HTML5 (using HTML5 Boilerplate)  
   
 API:   
-WebGL + Three.js  
+Three.js  
 
 # Prerequisites
-## Installation
-nodejs   
-three  
+## Installation  
+None 
 
 ## Reference
 
@@ -24,10 +23,4 @@ https://threejsfundamentals.org/
 Mash Phong Material: https://threejs.org/docs/?q=meshphongmaterial#api/en/materials/MeshPhongMaterial
 
 
-
-  
-# Test and Debug
-
-
-# Deployment
 

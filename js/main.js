@@ -88,7 +88,11 @@ async function selectTemplate(id) {
 
   var currentTemplateName = template.value;
   var sceneInfo = new template_patterns[currentTemplateName]();
-  // var sceneInfo =
+
+  //loading
+  var loadingElem = document.getElementById("loading-canvas");
+  loadingElem.classList.add("displayable");
+
   await sceneInfo.init();
   stop();
   scene = sceneInfo.scene;
@@ -97,8 +101,16 @@ async function selectTemplate(id) {
   init();
   animate();
 
-  var menuElem = document.getElementById("menu-button");
-  menuElem.dispatchEvent(new Event('click'));
+  //close menu
+  setTimeout(()=>{
+    try {
+      // var menuElem = document.getElementById("menu-button");
+      // menuElem.dispatchEvent(new Event('click'));
+      loadingElem.classList.remove("displayable");
+    } catch (e) {
+    }
+  }, 500);
+
   console.log(currentTemplateName + " loaded");
 }
 window.selectTemplate = selectTemplate;

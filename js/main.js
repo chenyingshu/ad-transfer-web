@@ -82,6 +82,7 @@ var template_patterns = {
 };
 
 async function selectTemplate(id) {
+  if (id > 0) startMusic();
 
   var template = document.getElementById("template_"+ id);
   template.checked = true;
@@ -157,5 +158,6 @@ function render() {
 
 
 /*************************** THREEJS PART  - END ***********************************/
+
 
 

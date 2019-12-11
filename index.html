@@ -66,7 +66,15 @@ Authors: CHEN, Yingshu, HUANG, Huajian
         <button class="menu-template-btn" name="template" value="template_3" id="template_3" onclick="selectTemplate(3)"> Template3<br>
           <img src="img/beer.png" class="menu-template-img">
         </button>
+        <li class="menu-section">
+          Music <span class="menu-music-icon" id="music-icon" onclick="musicSwitch()"><img src="img/music-cd.png"></span>
 
+          <audio loop class="music-controls" id="music-controls">
+            <source src="music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+        </li>
       </ul>
     </a>
 
@@ -117,6 +125,31 @@ Authors: CHEN, Yingshu, HUANG, Huajian
                 allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
             }
         }
+    }
+
+    /***** MUSIC CONTROLS ****/
+    var music_on = false;
+
+    function musicSwitch() {
+        console.log("switch music on/off!");
+        music_on = !music_on;
+        var musicIconElem = document.getElementById("music-icon");
+        var musicControlElem = document.getElementById("music-controls");
+        if (music_on) {
+            musicIconElem.classList.add("active");
+            musicControlElem.play();
+        } else {
+            musicIconElem.classList.remove("active");
+            musicControlElem.pause();
+        }
+    }
+
+    function startMusic() {
+        var musicIconElem = document.getElementById("music-icon");
+        var musicControlElem = document.getElementById("music-controls");
+        music_on = true;
+        musicIconElem.classList.add("active");
+        musicControlElem.play();
     }
 
 </script>

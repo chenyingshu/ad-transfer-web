@@ -525,8 +525,7 @@ export default class template_3 {
 
 
     var f3 = this.gui.addFolder("Text");
-    // var folder = this.gui.addFolder('TextGeometry');
-    // f3.add( data, 'text' ).onChange( generateGeometry );
+    f3.add(textData, 'text' ).onChange( generateGeometry );
     f3.add(textData, 'size', 1, 30).onChange(generateGeometry);
     f3.add(textData, 'height', 0.1, 5).step(0.1).onChange(generateGeometry);
     f3.add(textData, 'curveSegments', 1, 20).step(1).onChange(generateGeometry);

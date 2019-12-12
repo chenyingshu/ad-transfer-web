@@ -6,10 +6,12 @@ HTML5 (using HTML5 Boilerplate)
   
 API:   
 Three.js  
+dat.gui.js
 
 # Prerequisites
 ## Installation  
-None 
+Need server to run the webpage:
+https://threejs.org/docs/#manual/en/introduction/How-to-run-things-locally
 
 ## Reference
 

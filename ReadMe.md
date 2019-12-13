@@ -6,21 +6,23 @@ HTML5 (using HTML5 Boilerplate)
   
 API:   
 Three.js  
+dat.gui.js
 
 # Prerequisites
 ## Installation  
-None 
+Need server to run the webpage:
+https://threejs.org/docs/#manual/en/introduction/How-to-run-things-locally
 
 ## Reference
-
+  
 JavaScript Crash Course: https://cs.wellesley.edu/~cs307/readings/JavaScript-crash-course.html
-
-threejs: https://threejs.org/
+  
+threejs: https://threejs.org/  
 https://threejsfundamentals.org/
-
+  
 3js slide set from RTR: http://www.realtimerendering.com/basics3js/#1
-
+  
 Mash Phong Material: https://threejs.org/docs/?q=meshphongmaterial#api/en/materials/MeshPhongMaterial
-
-
+  
+Fresnel Effect: https://threejs.org/examples/webgl_materials_shaders_fresnel.html
 

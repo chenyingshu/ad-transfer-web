@@ -60,7 +60,9 @@ export default class template_3 {
         function (gltf) {
           gltf.scene.scale.set(3, 3, 3);
           gltf.scene.position.set(0, -15, 0);
-
+          gltf.scene.traverse( function ( node ) {
+            if ( node.isMesh ) node.castShadow = true;
+          } );
           scene.add(gltf.scene);
 
           gltf.animations; // Array<THREE.AnimationClip>
@@ -167,7 +169,7 @@ export default class template_3 {
       circle.castShadow = false;
       circle.receiveShadow = true;
       circle.rotation.x = 90 * Math.PI / 180;
-      circle.position.set(0, -10, 0);
+      circle.position.set(0, -8, 0);
       circle.updateMatrixWorld();
       // sceneMaterials.push(circleMaterial);
       circleMaterial.needsUpdate = true;
@@ -311,7 +313,8 @@ export default class template_3 {
       },
       PointLight:  {
         color : "#f2f8ec",
-        intensity : 50,
+        intensity : 20,
+        castShadow: true,
         distance: 20,
         x : 3,
         y : 3,
@@ -320,7 +323,7 @@ export default class template_3 {
       SpotLight:  {
         color : "#f2f8ec",
         intensity : 7,
-        distance: 100,
+        distance: 50,
         posx : 0,
         posy : 6,
         posz : 0,
@@ -349,13 +352,16 @@ export default class template_3 {
     lights[am_num] = new THREE.AmbientLight(0xeeeeee, 10); // soft white light
     var point_num = num_light++;
     var sphere = new THREE.SphereBufferGeometry( 0.5, 16, 8 );
-    lights[point_num] = new THREE.PointLight(0xf2f8ec, 10, 100);
+    lights[point_num] = new THREE.PointLight(0xf2f8ec, lightingParams.PointLight.intensity, lightingParams.PointLight.distance);
     lights[point_num].add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xf2f8ec } ) ) );
+    lights[point_num].castShadow = lightingParams.PointLight.castShadow;
     var spot_num = num_light++;
-    lights[spot_num] = new THREE.SpotLight(0xf2f8ec, 10, 100);
+    lights[spot_num] = new THREE.SpotLight(0xf2f8ec,  lightingParams.SpotLight.intensity, lightingParams.SpotLight.distance);
+    lights[spot_num].castShadow = lightingParams.SpotLight.castShadow;
 
     var dynamicLights = {
-      enable: true
+      enable: true,
+      castShadow: true
     };
 
 
@@ -499,6 +505,7 @@ export default class template_3 {
     f21.add(light_param, 'intensity', 0, 100).step(0.1).onChange( setLightings );
     // f21.addColor(light_param, 'color').onChange(this.handleColorChange(lights[light_idx].color));
     f21.add(light_param, 'distance', 0, 1000).step(1).onChange( setLightings );
+    f21.add(light_param, 'castShadow').onChange( setLightings );
     f21.add(light_param, 'x', -100, 100).step(0.5).onChange( setLightings );
     f21.add(light_param, 'y', -100, 100).step(0.5).onChange( setLightings );
     f21.add(light_param, 'z', -100, 100).step(0.5).onChange( setLightings );
@@ -510,6 +517,7 @@ export default class template_3 {
     f21.add(light_param, 'intensity', 0, 100).step(0.1).onChange( setLightings );
     f21.addColor(light_param, 'color').onChange( setLightings );
     f21.add(light_param, 'distance', 0, 1000).step(1).onChange( setLightings );
+    f21.add(light_param, 'castShadow').onChange( setLightings );
     f21.add(light_param, 'posx', -100, 100).step(0.5).onChange( setLightings );
     f21.add(light_param, 'posy', -100, 100).step(0.5).onChange( setLightings );
     f21.add(light_param, 'posz', -100, 100).step(0.5).onChange( setLightings );

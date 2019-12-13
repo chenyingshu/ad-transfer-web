@@ -131,6 +131,12 @@ var SpotLights = function() {
         newSpot.shadow.mapSize.width = spotWShadowRes;
         newSpot.shadow.mapSize.height = spotHShadowRes;
         newSpot.castShadow = true;
+        newSpot.shadow.camera.near = 0.5;
+        newSpot.shadow.camera.far = 5000;
+        newSpot.shadow.camera.left = -500;
+        newSpot.shadow.camera.bottom = -500;
+        newSpot.shadow.camera.right = 500;
+        newSpot.shadow.camera.top = 500;
         newSpot.target = target;
 
         return newSpot;

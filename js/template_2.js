@@ -160,7 +160,7 @@ export default class template_2 {
       mesh.position.y = y - 15;
       mesh.position.z = Math.random() * 5;
 
-      mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 2;
+      mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 1 + 0.5;
       this.scene.add( mesh );
       bubbles.push( mesh );
 

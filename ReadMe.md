@@ -13,6 +13,9 @@ dat.gui.js
 Need server to run the webpage:
 https://threejs.org/docs/#manual/en/introduction/How-to-run-things-locally
 
+# Demo
+You can check our online demo [here](https://ychengw.student.ust.hk/ad-transfer/).
+
 ## Reference
   
 JavaScript Crash Course: https://cs.wellesley.edu/~cs307/readings/JavaScript-crash-course.html

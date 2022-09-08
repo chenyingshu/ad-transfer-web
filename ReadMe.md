@@ -9,7 +9,8 @@ Three.js
 dat.gui.js
 
 Issues:
-[] Sep 2022, To fix Fresnel Shader
+
+- [ ] Sep 2022, To fix Fresnel Shader
 
 # Prerequisites
 ## Installation  

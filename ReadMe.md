@@ -8,6 +8,9 @@ API:
 Three.js  
 dat.gui.js
 
+Issues:
+[] Sep 2022, To fix Fresnel Shader
+
 # Prerequisites
 ## Installation  
 Need server to run the webpage:

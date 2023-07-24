@@ -10,7 +10,7 @@ dat.gui.js
 
 Issues:
 
-- [ ] Sep 2022, To fix Fresnel Shader
+- [ ] Sep 2022, To fix Fresnel Shader, ref: https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/complex-materials
 
 # Prerequisites
 ## Installation  

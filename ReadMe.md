@@ -10,7 +10,9 @@ dat.gui.js
 
 Issues:
 
-- [ ] Sep 2022, To fix Fresnel Shader, ref: https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/complex-materials
+- [x] Fixed on 30 July 2023. Sep 2022, To fix Fresnel Shader, ref:  
+https://github.com/timoxley/threejs/blob/master/examples/webgl_materials_shaders_fresnel.html
+https://alteredqualia.com/three/examples/materials_shaders_fresnel.html
 
 # Prerequisites
 ## Installation  
@@ -18,7 +20,7 @@ Need server to run the webpage:
 https://threejs.org/docs/#manual/en/introduction/How-to-run-things-locally
 
 # Demo
-You can check our online demo [here](https://ychengw.student.ust.hk/ad-transfer/).
+You can check our online demo [here](https://chenyingshu.github.io/ad-transfer/).
 
 ## Reference
   

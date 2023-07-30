@@ -1,4 +1,6 @@
-import { FresnelShader } from 'https://threejs.org/examples/jsm/shaders/FresnelShader.js';
+// import { FresnelShader } from 'https://threejs.org/examples/jsm/shaders/FresnelShader.js';
+import "./FresnelShader.js";
+
 var bubbles = [];
 var bubbleParams =  {
   enable: true,
@@ -164,7 +166,7 @@ export default class template_1 {
 
     //bubbles - Fresnel Effect
     var bubble_geometry = new THREE.SphereBufferGeometry( 1, 16, 16 );
-    var shader = FresnelShader;
+    var shader = THREE.ShaderUtils.lib[ "fresnel" ]; // updated on 30 July 2023
     var uniforms = THREE.UniformsUtils.merge( [
 
       THREE.UniformsLib[ "lights" ],
@@ -260,39 +262,39 @@ export default class template_1 {
     }
     function generateGeometry() {
 
-        var loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/' + textData.font + '_' + textData.weight + '.typeface.json', function (font) {
+      var loader = new THREE.FontLoader();
+      loader.load('https://threejs.org/examples/fonts/' + textData.font + '_' + textData.weight + '.typeface.json', function (font) {
 
-          var geometry = new THREE.TextGeometry(textData.text, {
-            font: font,
-            size: textData.size,
-            height: textData.height,
-            curveSegments: textData.curveSegments,
-            bevelEnabled: textData.bevelEnabled,
-            bevelThickness: textData.bevelThickness,
-            bevelSize: textData.bevelSize,
-            bevelOffset: textData.bevelOffset,
-            bevelSegments: textData.bevelSegments
-          });
-
-          geometry = new THREE.BufferGeometry().fromGeometry(geometry);
-
-          textMesh.geometry.dispose();
-          textMesh.geometry = geometry;
-
-          var textMaterial = new THREE.MeshPhongMaterial({
-            side: THREE.DoubleSide,
-            flatShading: textData.flatShading
-          });
-          textMaterial.color.setHex(textData.color.replace('#', '0x'));
-          textMaterial.emissive.setHex(textData.emissive.replace('#', '0x'));
-          textMaterial.needsUpdate = true;
-          // textMesh.material.dispose();
-          textMesh.material = textMaterial;
-          textMesh.position.set(textData.posx, textData.posy, textData.posz);
-          textMesh.rotation.set(textData.anglex, textData.angley, textData.anglez);
+        var geometry = new THREE.TextGeometry(textData.text, {
+          font: font,
+          size: textData.size,
+          height: textData.height,
+          curveSegments: textData.curveSegments,
+          bevelEnabled: textData.bevelEnabled,
+          bevelThickness: textData.bevelThickness,
+          bevelSize: textData.bevelSize,
+          bevelOffset: textData.bevelOffset,
+          bevelSegments: textData.bevelSegments
         });
-      }
+
+        geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+
+        textMesh.geometry.dispose();
+        textMesh.geometry = geometry;
+
+        var textMaterial = new THREE.MeshPhongMaterial({
+          side: THREE.DoubleSide,
+          flatShading: textData.flatShading
+        });
+        textMaterial.color.setHex(textData.color.replace('#', '0x'));
+        textMaterial.emissive.setHex(textData.emissive.replace('#', '0x'));
+        textMaterial.needsUpdate = true;
+        // textMesh.material.dispose();
+        textMesh.material = textMaterial;
+        textMesh.position.set(textData.posx, textData.posy, textData.posz);
+        textMesh.rotation.set(textData.anglex, textData.angley, textData.anglez);
+      });
+    }
 
     generateGeometry();
     this.scene.add( textMesh );

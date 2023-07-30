@@ -1,4 +1,5 @@
-import { FresnelShader } from 'https://threejs.org/examples/jsm/shaders/FresnelShader.js';
+// import { FresnelShader } from 'https://threejs.org/examples/jsm/shaders/FresnelShader.js';
+// https://threejs.org/examples/jsm/shaders/FresnelShader.js cannot found now (Sep 2022)
 var bubbles = [];
 
 export default class template_2 {
@@ -131,7 +132,8 @@ export default class template_2 {
 
     //bubbles - Fresnel Effect
     var bubble_geometry = new THREE.SphereBufferGeometry( 0.5, 16, 16 );
-    var shader = FresnelShader;
+    // var shader = FresnelShader;
+    var shader = THREE.ShaderUtils.lib[ "fresnel" ]; // updated on 30 July 2023
     var uniforms = THREE.UniformsUtils.merge( [
 
       THREE.UniformsLib[ "lights" ],
